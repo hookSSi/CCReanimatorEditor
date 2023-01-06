@@ -1,0 +1,88 @@
+{
+  "name": "cc-reanimator-editor",
+  "version": "0.0.1",
+  "description": "It's a tool for my games",
+  "author": {
+    "name": "hookssi",
+    "email": "hook@minimumstudio.net",
+    "git-home": "https://github.com/hookssi"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hookssi/CCReanimatorEditor"
+  },
+  "license": "MIT",
+  "main": "src/main.js",
+  "main-menu": {
+    "i18n:MAIN_MENU.package.title/i18n:cc-reanimator-editor.name/i18n:cc-reanimator-editor.cocos": {
+      "message": "cc-reanimator-editor:open-cocos-panel",
+      "accelerator": "F3"
+    },
+    "i18n:MAIN_MENU.package.title/i18n:cc-reanimator-editor.name/i18n:cc-reanimator-editor.native": {
+      "message": "cc-reanimator-editor:open-native-panel"
+    },
+    "i18n:MAIN_MENU.package.title/i18n:cc-reanimator-editor.name/i18n:cc-reanimator-editor.setting": {
+      "message": "cc-reanimator-editor:open-setting-panel",
+      "icon": "/images/setting.png"
+    },
+    "i18n:MAIN_MENU.package.title/i18n:cc-reanimator-editor.name/i18n:cc-reanimator-editor.checkUpdate": {
+      "message": "cc-reanimator-editor:force-check-update",
+      "icon": "/images/update.png"
+    }
+  },
+  "panel.cocos": {
+    "main": "src/renderer/cocos/main.js",
+    "type": "dockable",
+    "title": "i18n:cc-reanimator-editor.name",
+    "width": 600,
+    "height": 250,
+    "min-width": 500,
+    "min-height": 150
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
+    "@commitlint/config-conventional": "^17.2.0",
+    "@commitlint/parse": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.0.1",
+    "commitizen": "^4.2.5",
+    "commitlint": "^11.0.0",
+    "cz-emoji-conventional": "^1.0.1",
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.5",
+    "eslint-plugin-import": "^2.20",
+    "eslint-plugin-only-warn": "^1.0.3",
+    "eslint-plugin-prettier": "^4.0",
+    "husky": "^8.0",
+    "lint-staged": "^13.0.1",
+    "prettier": "^2.5.1"
+},
+"scripts": {
+    "commit": "git-cz",
+    "prepare": "husky install"
+},
+"config": {
+    "commitizen": {
+        "path": "cz-emoji-conventional"
+    }
+},
+"lint-staged": {
+    "*.ts": [
+        "eslint --fix",
+        "prettier --write",
+        "git add"
+    ]
+},
+  "reload": {
+    "renderer": [
+      "src/renderer/cocos/**/*"
+    ],
+    "ignore": [
+      "config.json",
+      "CHANGELOG.md",
+      "README.md"
+    ]
+  }
+}
