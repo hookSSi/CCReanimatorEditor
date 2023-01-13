@@ -1,5 +1,8 @@
 {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "editor.formatOnPaste": false, // required
     "editor.formatOnType": false, // required
     "editor.formatOnSave": true, // optional
@@ -8,9 +11,9 @@
     "editor.codeActionsOnSave": {
         "source.fixAll": true // 저장시 바로 적용
     },
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
+    "eslint.workingDirectories": [
+        "./src"
+    ],
     "docwriter.style": "Custom",
     "cSpell.words": ["aabb", "Boomber", "lerp", "Reanimator"],
     "better-comments.tags": [
@@ -60,5 +63,7 @@
             "italic": false
         }
     ],
-    "better-comments.highlightPlainText": true
+    "better-comments.highlightPlainText": true,
+    "eslint.format.enable": true,
+    "eslint.quiet": true,
 }

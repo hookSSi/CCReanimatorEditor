@@ -2,8 +2,12 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "baseUrl": "src"
     },
+    "include": [
+        "src"
+    ],
     "exclude": [
         "node_modules",
         ".vscode",

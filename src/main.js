@@ -1,3 +1,5 @@
+'use strict'
+
 const PanelManager = require('./panel-manager');
 const MainUtil = require('./eazax/main-util');
 const { print, translate, checkUpdate } = require('./eazax/editor-util');
@@ -28,8 +30,9 @@ function onPrintEvent(event, options) {
  */
 function onGreetEvent(event, content) {
     print('log', content);
+
     // Reply Rendering Process
-    MainUtil.reply(event, 'greet-reply', translate('nice'));
+    MainUtil.reply(event, 'greet-reply', () => translate('nice'));
 }
 
 module.exports = {
@@ -73,6 +76,8 @@ module.exports = {
         MainUtil.on('check-update', onCheckUpdateEvent);
         MainUtil.on('print', onPrintEvent);
         MainUtil.on('greet', onGreetEvent);
+
+        Editor.success('Reanimator Loaded!');
     },
 
     unload() {

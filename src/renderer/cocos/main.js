@@ -1,17 +1,22 @@
-const { readFileSync } = require('fs');
-const { join } = require('path');
+const Fs = require('fs');
+const Path = require('path');
 
-const PACKAGE_PATH = join(__dirname, '../../../');
-const DIR_PATH = join(PACKAGE_PATH, 'src/renderer/cocos/');
+const PackageUtil = require('..\\..\\eazax\\package-util');
 
-const App = require(join(DIR_PATH, 'index'));
+/** package name */
+const PACKAGE_NAME = PackageUtil.name
+const PACKAGE_PATH = Editor.url(`packages://${PACKAGE_NAME}/`);
+const DIR_PATH = Path.join(PACKAGE_PATH, 'src\\renderer\\cocos\\');
 
-// 创建面板
+const Vue = require(Path.join(PACKAGE_PATH, 'lib\\vue.global.prod'));
+const App = require(Path.join(DIR_PATH, 'index'));
+
+// create panel
 Editor.Panel.extend({
 
     /** HTML */
     // template: readFileSync(join(__dirname, 'index.html'), 'utf8'),
-    template: readFileSync(join(DIR_PATH, 'index.html'), 'utf8'),
+    template: Fs.readFileSync(Path.join(DIR_PATH, 'index.html'), { encoding: 'utf8' }),
 
     /**
      * 面板渲染成功
@@ -22,24 +27,24 @@ Editor.Panel.extend({
         // loadCss(root, join(__dirname, '../../eazax/css/cocos-tag.css'));
         // loadCss(root, join(__dirname, '../../eazax/css/cocos-class.css'));
         // loadCss(root, join(__dirname, 'index.css'));
-        loadCSS(root, join(PACKAGE_PATH, 'src/eazax/css/cocos-tag.css'));
-        loadCSS(root, join(PACKAGE_PATH, 'src/eazax/css/cocos-class.css'));
-        loadCSS(root, join(DIR_PATH, 'index.css'));
-        // 先替换掉编辑器内置的 Vue
+        loadCSS(root, Path.join(PACKAGE_PATH, 'src\\eazax\\css\\cocos-tag.css'));
+        loadCSS(root, Path.join(PACKAGE_PATH, 'src\\eazax\\css\\cocos-class.css'));
+        loadCSS(root, Path.join(DIR_PATH, 'index.css'));
+        //Replace Vue Version
         const oldVue = window.Vue;
         window.Vue = Vue;
-        // 创建实例
+        // Creating an Instance
         const app = Vue.createApp(App);
-        // 挂载
+        // Mount
         app.mount(root);
-        // 把编辑器的 Vue 换回去
+        // Editor의 Vue 되돌리기
         window.Vue = oldVue;
     },
 
 });
 
 /**
- * 加载样式表
+ * stylesheet load
  * @param {HTMLElement} root 根元素
  * @param {string} path CSS 文件路径
  */

@@ -5,7 +5,6 @@
  * @see https://gitee.com/ifaswind/eazax-ccc/blob/master/declarations/editor.d.ts
  */
 declare module Editor {
-
     /**
      * Log the normal message and show on the console. The method will send ipc message editor:console-log to all windows.
      * @param args Whatever arguments the message needs
@@ -38,44 +37,40 @@ declare module Editor {
 
     /**
      * Require the module by Editor.url. This is good for module exists in package, since the absolute path of package may be variant in different machine.
-     * @param url 
+     * @param url
      */
     function require(url: string): any;
 
     /**
      * Returns the file path (if it is registered in custom protocol) or url (if it is a known public protocol).
-     * @param url 
-     * @param encode 
+     * @param url
+     * @param encode
      */
     function url(url: string, encode?: string): string;
 
     function T(key: string): string;
-
 }
 
 declare module Editor {
-    readonly let appPath: string;
-    readonly let frameworkPath: string;
-    readonly let importPath: string;
-    readonly let isWin32: boolean;
-    readonly let isDarwin: boolean;
-    readonly let lang: string;
-    readonly let libraryPath: string;
-    readonly let sceneScripts: { [packageName: string]: string };
+    let appPath: string;
+    let frameworkPath: string;
+    let importPath: string;
+    let isWin32: boolean;
+    let isDarwin: boolean;
+    let lang: string;
+    let libraryPath: string;
+    let sceneScripts: { [packageName: string]: string };
 }
 
 declare module Editor {
-
     /**
      * 渲染进程
      */
     module RendererProcess {
-
         /**
-        * AssetDB singleton class in renderer process, you can access the instance with `Editor.assetdb`.
-        */
+         * AssetDB singleton class in renderer process, you can access the instance with `Editor.assetdb`.
+         */
         class AssetDB {
-
             /**
              * The remote AssetDB instance of main process, same as `Editor.remote.assetdb`.
              */
@@ -88,54 +83,54 @@ declare module Editor {
 
             /**
              * Reveal given url in native file system.
-             * @param url 
+             * @param url
              */
             explore(url: string): string;
 
             /**
              * Reveal given url's library file in native file system.
-             * @param url 
+             * @param url
              */
             exploreLib(url: string): string;
 
             /**
              * Get native file path by url.
-             * @param url 
+             * @param url
              * @param cb The callback function.
              */
             queryPathByUrl(url: string, cb?: (err: any, path: any) => void): void;
 
             /**
              * Get uuid by url.
-             * @param url 
+             * @param url
              * @param cb The callback function.
              */
             queryUuidByUrl(url: string, cb?: (err: any, uuid: any) => void): void;
 
             /**
              * Get native file path by uuid.
-             * @param uuid 
+             * @param uuid
              * @param cb The callback function.
              */
             queryPathByUuid(uuid: string, cb?: (err: any, path: any) => void): void;
 
             /**
              * Get asset url by uuid.
-             * @param uuid 
+             * @param uuid
              * @param cb The callback function.
              */
             queryUrlByUuid(uuid: string, cb?: (err: any, url: any) => void): void;
 
             /**
              * Get asset info by uuid.
-             * @param uuid 
+             * @param uuid
              * @param cb The callback function.
              */
             queryInfoByUuid(uuid: string, cb?: (err: any, info: any) => void): void;
 
             /**
              * Get meta info by uuid.
-             * @param uuid 
+             * @param uuid
              * @param cb The callback function.
              */
             queryMetaInfoByUuid(uuid: string, cb?: (err: any, info: any) => void): void;
@@ -152,153 +147,158 @@ declare module Editor {
              * @param assetTypes The asset type(s).
              * @param cb The callback function.
              */
-            queryAssets(pattern: string, assetTypes: string | string[], cb?: (err: any, results: any[]) => void): void;
+            queryAssets(
+                pattern: string,
+                assetTypes: string | string[],
+                cb?: (err: any, results: any[]) => void,
+            ): void;
 
             /**
-             * Import files outside asset-db to specific url folder. 
+             * Import files outside asset-db to specific url folder.
              * @param rawfiles Rawfile path list.
              * @param destUrl The url of dest folder.
              * @param showProgress Show progress or not.
              * @param cb The callbak function.
              */
-            import(rawfiles: string[], destUrl: string, showProgress?: boolean, cb?: (err: any, result: any) => void): void;
+            import(
+                rawfiles: string[],
+                destUrl: string,
+                showProgress?: boolean,
+                cb?: (err: any, result: any) => void,
+            ): void;
 
             /**
              * Create asset in specific url by sending string data to it.
-             * @param uuid 
-             * @param metaJson 
+             * @param uuid
+             * @param metaJson
              * @param cb the callback function.
              */
             create(url: string, data: string, cb?: (err: any, result: any) => void): void;
 
             /**
              * Move asset from src to dest.
-             * @param srcUrl 
-             * @param destUrl 
-             * @param showMessageBox 
+             * @param srcUrl
+             * @param destUrl
+             * @param showMessageBox
              */
             move(srcUrl: string, destUrl: string, showMessageBox?: boolean): void;
 
             /**
              * Delete assets by url list.
-             * @param urls 
+             * @param urls
              */
             delete(urls: string[]): void;
 
             /**
              * Save specific asset by sending string data.
-             * @param url 
-             * @param data 
+             * @param url
+             * @param data
              * @param cb the callback function.
              */
             saveExists(url: string, data: string, cb?: (err: any, result: any) => void): void;
 
             /**
              * Create or save assets by sending string data. If the url is already existed, it will be changed with new data. The behavior is same with method saveExists. Otherwise, a new asset will be created. The behavior is same with method create.
-             * @param url 
-             * @param data 
+             * @param url
+             * @param data
              * @param cb the callback function.
              */
             createOrSave(url: string, data: string, cb?: (err: any, result: any) => void): void;
 
             /**
              * Save specific meta by sending meta's json string.
-             * @param uuid 
-             * @param metaJson 
+             * @param uuid
+             * @param metaJson
              * @param cb the callback function.
              */
             saveMeta(uuid: string, metaJson: string, cb?: (err: any, result: any) => void): void;
 
             /**
              * Refresh the assets in url, and return the results.
-             * @param url 
-             * @param cb 
+             * @param url
+             * @param cb
              */
             refresh(url: string, cb?: (err: any, results: any[]) => void): void;
-
         }
-
     }
 
     /**
      * 主进程
      */
     module MainProcess {
-
         /**
          * AssetDB singleton class in main process, you can access the instance with `Editor.assetdb`.
          */
         class AssetDB {
-
             /**
              * Return uuid by url. If uuid not found, it will return null.
-             * @param url 
+             * @param url
              */
             urlToUuid(url: string): string;
 
             /**
              * Return uuid by file path. If uuid not found, it will return null.
-             * @param fspath 
+             * @param fspath
              */
             fspathToUuid(fspath: string): string;
 
             /**
              * Return file path by uuid. If file path not found, it will return null.
-             * @param url 
+             * @param url
              */
             uuidToFspath(url: string): string;
 
             /**
              * Return url by uuid. If url not found, it will return null.
-             * @param uuid 
+             * @param uuid
              */
             uuidToUrl(uuid: string): string;
 
             /**
              * Return url by file path. If file path not found, it will return null.
-             * @param fspath 
+             * @param fspath
              */
             fspathToUrl(fspath: string): string;
 
             /**
              * Return file path by url. If url not found, it will return null.
-             * @param url 
+             * @param url
              */
             urlToFspath(url: string): string;
 
             /**
              * Check existance by url.
-             * @param url 
+             * @param url
              */
             exists(url: string): string;
 
             /**
              * Check existance by uuid.
-             * @param uuid 
+             * @param uuid
              */
             existsByUuid(uuid: string): string;
 
             /**
              * Check existance by path.
-             * @param fspath 
+             * @param fspath
              */
             existsByPath(fspath: string): string;
 
             /**
              * Check whether asset for a given url is a sub asset.
-             * @param url 
+             * @param url
              */
             isSubAsset(url: string): boolean;
 
             /**
              * Check whether asset for a given uuid is a sub asset.
-             * @param uuid 
+             * @param uuid
              */
             isSubAssetByUuid(uuid: string): boolean;
 
             /**
              * Check whether asset for a given path is a sub asset.
-             * @param fspath 
+             * @param fspath
              */
             isSubAssetByPath(fspath: string): boolean;
 
@@ -316,97 +316,97 @@ declare module Editor {
 
             /**
              * Check whether asset contains sub assets for a given path.
-             * @param fspath 
+             * @param fspath
              */
             containsSubAssetsByPath(fspath: string): boolean;
 
             /**
              * Return asset info by a given url.
-             * @param url 
+             * @param url
              */
             assetInfo(url: string): AssetInfo;
 
             /**
              * Return asset info by a given uuid.
-             * @param uuid 
+             * @param uuid
              */
             assetInfoByUuid(uuid: string): AssetInfo;
 
             /**
              * Return asset info by a given file path.
-             * @param fspath 
+             * @param fspath
              */
             assetInfoByPath(fspath: string): AssetInfo;
 
             /**
              * Return all sub assets info by url if the url contains sub assets.
-             * @param url 
+             * @param url
              */
             subAssetInfos(url: string): AssetInfo[];
 
             /**
              * Return all sub assets info by uuid if the uuid contains sub assets.
-             * @param uuid 
+             * @param uuid
              */
             subAssetInfosByUuid(uuid: string): AssetInfo[];
 
             /**
              * Return all sub assets info by path if the path contains sub assets.
-             * @param fspath 
+             * @param fspath
              */
             subAssetInfosByPath(fspath: string): AssetInfo[];
 
             /**
              * Return meta instance by a given url.
-             * @param url 
+             * @param url
              */
             loadMeta(url: string): MetaBase;
 
             /**
              * Return meta instance by a given uuid.
-             * @param uuid 
+             * @param uuid
              */
             loadMetaByUuid(uuid: string): MetaBase;
 
             /**
              * Return meta instance by a given path.
-             * @param fspath 
+             * @param fspath
              */
             loadMetaByPath(fspath: string): MetaBase;
 
             /**
              * Return whether a given url is reference to a mount.
-             * @param url 
+             * @param url
              */
             isMount(url: string): boolean;
 
             /**
              * Return whether a given path is reference to a mount.
-             * @param fspath 
+             * @param fspath
              */
             isMountByPath(fspath: string): boolean;
 
             /**
              * Return whether a given uuid is reference to a mount.
-             * @param uuid 
+             * @param uuid
              */
             isMountByUuid(uuid: string): boolean;
 
             /**
              * Return mount info by url.
-             * @param url 
+             * @param url
              */
             mountInfo(url: string): MountInfo;
 
             /**
              * Return mount info by uuid.
-             * @param uuid 
+             * @param uuid
              */
             mountInfoByUuid(uuid: string): MountInfo;
 
             /**
              * Return mount info by path.
-             * @param fspath 
+             * @param fspath
              */
             mountInfoByPath(fspath: string): MountInfo;
 
@@ -423,7 +423,12 @@ declare module Editor {
                             // mounted, do something ...
                         });
              */
-            mount(path: string, mountPath: string, opts: { hide: object, vitural: object, icon: object }, cb?: (err: any) => void): void;
+            mount(
+                path: string,
+                mountPath: string,
+                opts: { hide: object; vitural: object; icon: object },
+                cb?: (err: any) => void,
+            ): void;
 
             /**
              * Attach the specified mount path.
@@ -475,8 +480,8 @@ declare module Editor {
 
             /**
              * Refresh the assets in url, and return the results.
-             * @param url 
-             * @param cb 
+             * @param url
+             * @param cb
              */
             refresh(url: string, cb?: Function): void;
 
@@ -502,7 +507,11 @@ declare module Editor {
              * @param assetTypes The asset type(s).
              * @param cb The callback function.
              */
-            queryAssets(pattern: string, assetTypes: string | string[], cb?: (err: Error, results: any[]) => void): void;
+            queryAssets(
+                pattern: string,
+                assetTypes: string | string[],
+                cb?: (err: Error, results: any[]) => void,
+            ): void;
 
             /**
              * queryMetas
@@ -510,7 +519,11 @@ declare module Editor {
              * @param type The asset type.
              * @param cb The callback function.
              */
-            queryMetas(pattern: string, type: string, cb?: (err: Error, results: any[]) => void): void;
+            queryMetas(
+                pattern: string,
+                type: string,
+                cb?: (err: Error, results: any[]) => void,
+            ): void;
 
             /**
              * move
@@ -522,86 +535,92 @@ declare module Editor {
 
             /**
              * delete
-             * @param urls 
-             * @param cb 
+             * @param urls
+             * @param cb
              */
             delete(urls: string[], cb?: (err: Error, results: any[]) => void): void;
 
             /**
              * Create asset at url with data.
-             * @param url 
-             * @param data 
-             * @param cb 
+             * @param url
+             * @param data
+             * @param cb
              */
             create(url: string, data: string, cb?: (err: Error, results: any[]) => void): void;
 
             /**
              * Save data to the exists asset at url.
-             * @param url 
-             * @param data 
-             * @param cb 
+             * @param url
+             * @param data
+             * @param cb
              */
             saveExists(url: string, data: string, cb?: (err: Error, meta: any) => void): void;
 
             /**
              * Import raw files to url
-             * @param rawfiles 
-             * @param url 
-             * @param cb 
+             * @param rawfiles
+             * @param url
+             * @param cb
              */
-            import(rawfiles: string[], url: string, cb?: (err: Error, results: any[]) => void): void;
+            import(
+                rawfiles: string[],
+                url: string,
+                cb?: (err: Error, results: any[]) => void,
+            ): void;
 
             /**
              * Overwrite the meta by loading it through uuid.
-             * @param uuid 
-             * @param jsonString 
-             * @param cb 
+             * @param uuid
+             * @param jsonString
+             * @param cb
              */
             saveMeta(uuid: string, jsonString: string, cb?: (err: Error, meta: any) => void): void;
 
             /**
              * Exchange uuid for two assets.
-             * @param urlA 
-             * @param urlB 
-             * @param cb 
+             * @param urlA
+             * @param urlB
+             * @param cb
              */
-            exchangeUuid(urlA: string, urlB: string, cb?: (err: Error, results: any[]) => void): void;
+            exchangeUuid(
+                urlA: string,
+                urlB: string,
+                cb?: (err: Error, results: any[]) => void,
+            ): void;
 
             /**
              * Clear imports.
-             * @param url 
-             * @param cb 
+             * @param url
+             * @param cb
              */
             clearImports(url: string, cb?: (err: Error, results: any[]) => void): void;
 
             /**
              * Register meta type.
-             * @param extname 
+             * @param extname
              * @param folder Whether it's a folder type.
-             * @param metaCtor 
+             * @param metaCtor
              */
             register(extname: string, folder: boolean, metaCtor: object): void;
 
             /**
              * Unregister meta type.
-             * @param metaCtor 
+             * @param metaCtor
              */
             unregister(metaCtor: object): void;
 
             /**
              * Get the relative path from mount path to the asset by fspath.
-             * @param fspath  
+             * @param fspath
              */
             getRelativePath(fspath: string): string;
 
             /**
              * Get the backup file path of asset file.
-             * @param filePath 
+             * @param filePath
              */
             getAssetBackupPath(filePath: string): string;
-
         }
-
     }
 
     interface MetaBase {
@@ -667,7 +686,7 @@ declare module Editor {
             CocosCreator: string;
             cocos2d: string;
             'editor-framework': string;
-        }
+        };
     }
 
     /** Remote 实例 */
@@ -675,7 +694,6 @@ declare module Editor {
 
     /** AssetDB 实例 */
     const assetdb: MainProcess.AssetDB;
-
 }
 
 interface AssetInfo {
@@ -691,55 +709,54 @@ interface AssetInfo {
 }
 
 declare module Editor.Project {
-    readonly let id: string;
-    readonly let name: string;
+    let id: string;
+    let name: string;
     /** Absolute path for current open project. */
-    readonly let path: string;
+    let path: string;
 }
 
 declare module Editor.Builder {
-
     /**
-     * 
+     *
      * @param eventName The name of the event
      * @param callback The event callback
      */
     function on(eventName: string, callback: (options: BuildOptions, cb: Function) => void): void;
 
     /**
-     * 
+     *
      * @param eventName The name of the event
      * @param callback The event callback
      */
     function once(eventName: string, callback: (options: BuildOptions, cb: Function) => void): void;
 
     /**
-     * 
+     *
      * @param eventName The name of the event
      * @param callback The event callback
      */
     function removeListener(eventName: string, callback: Function): void;
-
 }
 
 declare module Editor.Scene {
-
     /**
-     * 
-     * @param packageName 
-     * @param method 
-     * @param cb 
+     *
+     * @param packageName
+     * @param method
+     * @param cb
      */
-    function callSceneScript(packageName: string, method: string, cb: (err: Error, msg: any) => void): void;
-
+    function callSceneScript(
+        packageName: string,
+        method: string,
+        cb: (err: Error, msg: any) => void,
+    ): void;
 }
 
 declare module Editor.Panel {
-
     /**
      * Open a panel via panelID.
      * @param panelID The panel ID
-     * @param argv 
+     * @param argv
      */
     function open(panelID: string, argv?: object): void;
 
@@ -757,74 +774,70 @@ declare module Editor.Panel {
 
     /**
      * Extends a panel.
-     * @param proto 
+     * @param proto
      */
     function extend(proto: object): void;
-
 }
 
 declare module Editor.Selection {
-
     /**
      * Select item with its id.
-     * @param type 
-     * @param id 
-     * @param unselectOthers 
-     * @param confirm 
+     * @param type
+     * @param id
+     * @param unselectOthers
+     * @param confirm
      */
     function select(type: string, id: string, unselectOthers?: boolean, confirm?: boolean): void;
 
     /**
      * Unselect item with its id.
-     * @param type 
-     * @param id 
-     * @param confirm 
+     * @param type
+     * @param id
+     * @param confirm
      */
     function unselect(type: string, id: string, confirm?: boolean): void;
 
     /**
      * Hover item with its id. If id is null, it means hover out.
-     * @param type 
-     * @param id 
+     * @param type
+     * @param id
      */
     function hover(type: string, id: string): string;
 
     /**
-     * 
-     * @param type 
+     *
+     * @param type
      */
     function clear(type: string): void;
 
     /**
-     * 
-     * @param type 
+     *
+     * @param type
      */
     function curActivate(type: string): string[];
 
     /**
-     * 
-     * @param type 
+     *
+     * @param type
      */
     function curGlobalActivate(type: string): string[];
 
     /**
-     * 
-     * @param type 
+     *
+     * @param type
      */
     function curSelection(type: string): string[];
 
     /**
-     * 
-     * @param items 
+     *
+     * @param items
      * @param mode 'top-level', 'deep' and 'name'
-     * @param func 
+     * @param func
      */
     function filter(items: string[], mode: string, func: Function): string[];
-
 }
 
 declare module Editor.Ipc {
-
     /**
      * Send message with ...args to main process asynchronously. It is possible to add a callback as the last or the 2nd last argument to receive replies from the IPC receiver.
      * @param message Ipc message.
@@ -832,7 +845,7 @@ declare module Editor.Ipc {
      * @param callback You can specify a callback function to receive IPC reply at the last or the 2nd last argument.
      * @param timeout You can specify a timeout for the callback at the last argument. If no timeout specified, it will be 5000ms.
      */
-    function sendToMain(message: string, ...args?: any, callback?: Function, timeout?: number): void;
+    function sendToMain(message: string, ...args: any, callback?: Function, timeout?: number): void;
 
     /**
      * Send message with ...args to panel defined in renderer process asynchronously. It is possible to add a callback as the last or the 2nd last argument to receive replies from the IPC receiver.
@@ -842,7 +855,13 @@ declare module Editor.Ipc {
      * @param callback You can specify a callback function to receive IPC reply at the last or the 2nd last argument.
      * @param timeout You can specify a timeout for the callback at the last argument. If no timeout specified, it will be 5000ms.
      */
-    function sendToPanel(panelID: string, message: string, ...args?: any, callback?: Function, timeout?: number): void;
+    function sendToPanel(
+        panelID: string,
+        message: string,
+        ...args: any,
+        callback?: Function,
+        timeout?: number,
+    ): void;
 
     /**
      * Send message with ...args to all opened window and to main process asynchronously.
@@ -850,14 +869,14 @@ declare module Editor.Ipc {
      * @param args Whatever arguments the message needs.
      * @param option You can indicate the last argument as an IPC option by Editor.Ipc.option({...}).
      */
-    function sendToAll(message: string, ...args?: any, option?: object): void;
+    function sendToAll(message: string, ...args: any, option?: object): void;
 
     /**
      * Send message with ...args to main process synchronized and return a result which is responded from main process.
      * @param message Ipc message.
      * @param args Whatever arguments the message needs.
      */
-    function sendToMainSync(message: string, ...args?: any): void;
+    function sendToMainSync(message: string, ...args: any): void;
 
     /**
      * Send message with ...args to main process by package name and the short name of the message.
@@ -865,37 +884,48 @@ declare module Editor.Ipc {
      * @param message Ipc message.
      * @param args Whatever arguments the message needs.
      */
-    function sendToPackage(pkgName: string, message: string, ...args?: any): void;
-
+    function sendToPackage(pkgName: string, message: string, ...args: any): void;
 }
 
 declare module Editor.UI {
+    /**
+     *  Register a custom property.
+     *
+     *  @param prop
+     *  @param protoOrUrl
+     */
+    function registerProperty(prop: string, protoOrUrl: object | string);
+
+    /**
+     * Register a custom element.
+     *
+     * @param name
+     * @param def
+     */
+    function registerElement(name: string, def: object);
 
     module Setting {
-
         /**
          * Control the default step for float point input element. Default is 0.1.
-         * @param value 
+         * @param value
          */
         function stepFloat(value: number): void;
 
         /**
          * Control the default step for integer input element. Default is 1.
-         * @param value 
+         * @param value
          */
         function stepInt(value: number): void;
 
         /**
          * Control the step when shift key press down. Default is 10.
-         * @param value 
+         * @param value
          */
         function shiftStep(value: number): void;
-
     }
 
     module DragDrop {
-
-        readonly let dragging: boolean;
+        let dragging: boolean;
 
         function start(e: any, t: any): void;
 
@@ -914,13 +944,10 @@ declare module Editor.UI {
         function options(e: any);
 
         function getLength(e: any): number;
-
     }
-
 }
 
 declare module Editor.GizmosUtils {
-
     function addMoveHandles(e, n, t);
 
     function getCenter(e);
@@ -938,22 +965,19 @@ declare module Editor.GizmosUtils {
     function snapPixel(e);
 
     function snapPixelWihVec2(e);
-
 }
 
 declare module Editor.Utils {
-
     /**
      * Uuid 工具
      */
     module UuidUtils {
-
         /**
          * 压缩后的 uuid 可以减小保存时的尺寸，但不能做为文件名（因为无法区分大小写并且包含非法字符）。
          * 默认将 uuid 的后面 27 位压缩成 18 位，前 5 位保留下来，方便调试。
          * 如果启用 min 则将 uuid 的后面 30 位压缩成 20 位，前 2 位保留不变。
-         * @param uuid 
-         * @param min 
+         * @param uuid
+         * @param min
          */
         function compressUuid(uuid: string, min?: boolean): string;
 
@@ -964,9 +988,7 @@ declare module Editor.Utils {
         function isUuid(str: string): boolean;
 
         function uuid(): string;
-
     }
-
 }
 
 declare interface BuildOptions {
@@ -980,7 +1002,7 @@ declare interface BuildOptions {
         recordPath: string;
         scheme: string;
         skipRecord: boolean;
-    }
+    };
     apiLevel: string;
     appABIs: string[];
     appBundle: boolean;

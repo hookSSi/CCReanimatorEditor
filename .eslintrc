@@ -1,0 +1,13 @@
+{
+    "env": {
+        "commonjs": true,
+        "browser": true
+    },
+    "extends": ["airbnb", "plugin:prettier/recommended", "prettier"],
+    "plugins": ["only-warn"],
+    "overrides": [
+        {
+            "files": ["src/renderer/**/*.js"]
+        }
+    ]
+}
