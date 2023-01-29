@@ -1,22 +1,6 @@
 "use strict";
 
-function _promisify(f) {
-    return function (...args) {
-        return new Promise((resolve, reject) => {
-            function callback(err, result) {
-                if(err) {
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
-            }
-
-            args.push(callback);
-
-            f.call(this, ...args);
-        })
-    }
-}
+const { promisify } = require("util");
 
 Vue.component("preview-sprite-array", {
     template: `
@@ -94,11 +78,6 @@ Vue.component("preview-sprite-array", {
             type: Object
         }
     },
-    data: () => ({
-        requestIDs: [],
-        invalid: false,
-        cacheUuid: ""
-    }),
     methods: {
         T: Editor.T,
         arraySizeChanged(e) {
@@ -135,7 +114,7 @@ Vue.component("preview-sprite-array", {
             for(let i = 0; i < dragItems.length; i++) {           
                 let id = dragItems[i]
 
-                let queryMetaInfo = await _promisify(Editor.assetdb.queryMetaInfoByUuid)(id);
+                let queryMetaInfo = await promisify(Editor.assetdb.queryMetaInfoByUuid)(id);
                 let parsed = JSON.parse(queryMetaInfo.json);
 
                 if(queryMetaInfo.assetType === "sprite-frame") {
