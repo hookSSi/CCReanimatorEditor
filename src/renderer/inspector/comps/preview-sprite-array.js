@@ -46,7 +46,7 @@ Vue.component("preview-sprite-array", {
             background: #090;
         }
     </style>
-
+    
     <div class="section">
         <ui-drop-area droppable="asset" multi
             @drop-area-enter="onDropEnter" 

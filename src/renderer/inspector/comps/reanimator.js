@@ -106,8 +106,8 @@ Vue.component("reanimator", {
             let jsonData = await promisify(fs.readFile)(jsonPath[0], { encoding: "utf-8" });
             let nodeUUID = this.target.node.value.uuid;
 
-            Editor.Scene.callSceneScript('cc-reanimator-editor', 'jsonToReanimator', { jsonData: jsonData, nodeUUID: nodeUUID }, (err, length) => {
-                console.log (`get-canvas-children callback: length - ${length}`);
+            Editor.Scene.callSceneScript('cc-reanimator-editor', 'jsonToReanimator', { jsonData: jsonData, nodeUUID: nodeUUID }, (err, uuid) => {
+                console.log(`import complete ${uuid}`);
             });
         }
     }

@@ -6,7 +6,9 @@ Vue.component("simple-animation-node", {
         "packages://cc-reanimator-editor/src/renderer/inspector/comps/preview-sprite-array.js"
     ],
     template: `
-    <preview-sprite-array :target.sync="target.cells" :indent="0"></preview-sprite-array>
+    <cc-object-prop :target.sync="target.controlDriver" :indent="indent" :multi-values="multi"></cc-object-prop>
+    <cc-object-prop :target.sync="target.drivers" :indent="indent" :multi-values="multi"></cc-object-prop>
+    <preview-sprite-array :target.sync="target.cells" :indent="indent"></preview-sprite-array>
     `,
     props: {
         target: {
@@ -16,6 +18,10 @@ Vue.component("simple-animation-node", {
         multi: {
             twoWay: !0,
             type: Boolean
+        },
+        indent: {
+            twoWay: !0,
+            type: Number
         }
     }
 });
