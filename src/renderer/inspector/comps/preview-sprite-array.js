@@ -59,7 +59,7 @@ Vue.component("preview-sprite-array", {
     <ui-prop :tooltip="target.attrs.tooltip" :name="target.name" :indent="indent" v-readonly="target.attrs.readonly" foldable>
         <template v-if="!target.values || target.values.length <= 1">
             <ui-num-input class="flex-1" type="int" min="0" :value="target.value.length" @confirm="arraySizeChanged"></ui-num-input>
-            <div slot="child">
+            <div class="child" slot="child">
                 <preview-sprite v-for="prop in target.value" :target.sync="prop" :indent="indent+1"></preview-sprite>
             </div>
         </template>
@@ -79,7 +79,6 @@ Vue.component("preview-sprite-array", {
         }
     },
     methods: {
-        T: Editor.T,
         arraySizeChanged(e) {
             if (e.detail.value < this.target.value.length) {
                 let t = new Array(e.detail.value);

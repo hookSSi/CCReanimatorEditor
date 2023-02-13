@@ -10,7 +10,7 @@ const PACKAGE_PATH = Editor.url(`packages://${PACKAGE_NAME}`);
 
 (() => {
     Editor.UI.registerProperty('ReanimatorDriver', {
-        value: t => JSON.parse(t),
+        value: Editor.UI.parseObject,
         template: Fs.readFileSync(
             Path.join(PACKAGE_PATH, 'src/renderer/inspector/reanimator-driver.html'),
             'utf-8',
@@ -21,6 +21,7 @@ const PACKAGE_PATH = Editor.url(`packages://${PACKAGE_NAME}`);
                 this.value && (this.$inputKey.value = this.value.key.value),
                 this.values && (this.$inputKey.values = this.values.map(t => t.key.value)),
                 this.installStandardEvents(this.$inputKey),
+                this.$inputKey.maxLength = 100,
                 (this.$propNum = this.querySelector('#num-comp')),
                 (this.$inputNum = this.$propNum.children[0]),
                 (this.$inputNum.min = 0),
@@ -33,28 +34,22 @@ const PACKAGE_PATH = Editor.url(`packages://${PACKAGE_NAME}`);
                 this.installSlideEvents(
                     this.$propNum,
                     t => {
-                        this.$inputNum.value = this.$inputNum.value + t * this.$inputNum.step;
+                        this.$inputNum.value = this.$inputNum.value + t;
                     },
                     null,
                     () => {
-                        this.$inputNum.value = this.value.num.value;
+                        this.$inputNum.value = this.value.num;
                     },
                 ),
                 (this.multiValues = this.getAttribute('multi-values'));
-            const t = this.attrs.step;
-            t && (this.$inputNum.step = t);
         },
         inputValue() {
-            const k = this.$inputKey.multiValues;
-            const n = this.$inputNum.multiValues;
-
             return {
-                key: k ? null : this.$inputKey.value,
-                num: n ? null : this.$inputNum.value,
+                key: this.$inputKey.multiValues ? null : this.$inputKey.value,
+                num: this.$inputNum.multiValues ? null : this.$inputNum.value,
             };
         },
         valueChanged(t, i) {
-            console.log(t);
             (this.$inputKey.value = i.key.value), (this.$inputNum.value = i.num.value);
         },
         valuesChanged(t, i) {
@@ -69,20 +64,23 @@ const PACKAGE_PATH = Editor.url(`packages://${PACKAGE_NAME}`);
             if (!this.multiValues || !this.values || this.values.length <= 1)
                 return this.$inputKey.removeAttribute('multi-values');
 
-            const t = this.values.map(t => t.key.value);
-            t.every((i, e) => e == 0 || i == t)
-                ? (this.$inputKey.removeAttribute('multi-values'), (this.$inputKey.value = t))
-                : (this.$inputKey.setAttribute('multi-values', ''), (this.$inputKey.values = t));
+            var t = this.values[0];
+            this.values.every((i, e) => (e == 0 || i == t)
+                ? this.$inputKey.removeAttribute('multi-values')
+                : this.$inputKey.setAttribute('multi-values', ''))
         },
         _updateMultiNum() {
-            if (!this.multiValues || !this.values || this.values.length <= 1)
+            if (!this.multiValues || !this.values)
                 return this.$inputNum.removeAttribute('multi-values');
 
-            const t = this.values.map(t => t.num.value);
-            t.every((i, e) => e == 0 || i == t)
-                ? (this.$inputNum.removeAttribute('multi-values'), (this.$inputNum.value = t))
+            var t = this.values.map(t => t.num.value);
+            t.every((i, e) => e == 0 || i == t[e - 1])
+                ? (this.$inputNum.removeAttribute('multi-values'), (this.$inputNum.value = t[0]))
                 : (this.$inputNum.setAttribute('multi-values', ''), (this.$inputNum.values = t));
         },
+        _emitConfirm() {
+            // console.log('confirm');
+        }
     }),
         Editor.UI.registerProperty('PreviewSprite', {
             value: Editor.UI.parseObject,
