@@ -70,39 +70,45 @@ module.exports = {
 
         let newParent = self.parseToNode(node, root);
 
-        switch(node.type) {
-            case "SwitchNode": {
+        switch (node.type) {
+            case 1: // SimpleAnimationNode node
+                {
+                    let simpleAnimNodeComp = newParent.getComponent(
+                        cc.js.getClassByName(node.type),
+                    );
+
+                    simpleAnimNodeComp.setControlDriver(node.controlDriver);
+                    simpleAnimNodeComp.setDrivers(node.drivers);
+                    for (let i = 0; i < node.cells.length; i++) {
+                        simpleAnimNodeComp.addCell();
+                        let msg = {
+                            id: simpleAnimNodeComp.uuid,
+                            path: `cells.${i}.main.sprite`,
+                            type: 'cc.SpriteFrame',
+                            value: {
+                                uuid: node.cells[i].main.uuid,
+                            },
+                        };
+
+                        Editor.Ipc.sendToPanel('scene', 'scene:set-property', msg);
+                    }
+                }
+                break;
+            case 2: // SwitchNode node
+                {
                     let switchNodeComp = newParent.getComponent(cc.js.getClassByName(node.type));
 
                     // data binding
                     switchNodeComp.setControlDriver(node.controlDriver);
                     switchNodeComp.setDrivers(node.drivers);
-                    for(let i = 0; i < node.nodes.length; i++) {
+                    for (let i = 0; i < node.nodes.length; i++) {
                         let child = await self.recursiveDFS(node.nodes[i], newParent);
 
-                        if(child) {
-                            switchNodeComp.addNode(child.getComponent(cc.js.getClassByName("ReanimatorNode")));
+                        if (child) {
+                            switchNodeComp.addNode(
+                                child.getComponent(cc.js.getClassByName('ReanimatorNode')),
+                            );
                         }
-                    }
-                }
-                break;
-            case "SimpleAnimationNode": {
-                    let simpleAnimNodeComp = newParent.getComponent(cc.js.getClassByName(node.type));
-
-                    simpleAnimNodeComp.setControlDriver(node.controlDriver);
-                    simpleAnimNodeComp.setDrivers(node.drivers);
-                    for(let i = 0; i < node.cells.length; i++) {
-                        simpleAnimNodeComp.addCell(node.cells[i]);
-                        let msg = {
-                            id: simpleAnimNodeComp.uuid,
-                            path: `cells.${i}.main.sprite`,
-                            type: "cc.SpriteFrame",
-                            value: {
-                                uuid: node.cells[i].main.uuid
-                            }
-                        }
-    
-                        Editor.Ipc.sendToPanel("scene", "scene:set-property", msg);
                     }
                 }
                 break;
